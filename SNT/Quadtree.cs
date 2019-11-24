@@ -81,11 +81,12 @@
             for (int i = 0; i < 4; i++)
             {
                 Nodes![i].Compute();
-                CenterOfMass += Nodes![i].CenterOfMass;
-                TotalMass += Nodes![i].TotalMass;
+                var mass = Nodes![i].TotalMass;
+                CenterOfMass += Nodes![i].CenterOfMass * mass;
+                TotalMass += mass;
             }
 
-            CenterOfMass /= 4;
+            CenterOfMass /= TotalMass;
             TotalMass /= 4;
         }
 
