@@ -45,25 +45,30 @@
             return quadtree;
         }
 
-        public Vector2 GetForce(Particle particle, World world)
+        public Vector2 GetAccel(Particle particle, World world)
         {
-            float distance = (particle.Position - CenterOfMass).LengthSquared();
-            if ((Max.X - Min.X) / distance < world.Theta || Particle != null)
+            if (TotalMass == 0) return Vector2.Zero;
+
+            float distanceSquared = (particle.Position - CenterOfMass).LengthSquared();
+
+            if (distanceSquared == 0) return Vector2.Zero;
+
+            if ((Max.X - Min.X) / distanceSquared < world.Theta || Particle != null)
             {
-                return world.ForceBetween(
-                    distance,
-                    CenterOfMass, particle.Position,
-                    TotalMass, particle.Mass);
+                //return (particle.Position - CenterOfMass) / -distanceSquared * TotalMass * 0.0001f;
+                return world.AccelFor(
+                    distanceSquared, particle,
+                    CenterOfMass, TotalMass);
             }
 
-            Vector2 force = Vector2.Zero;
+            Vector2 accel = Vector2.Zero;
 
             for (int i = 0; i < 4; i++)
             {
-                force += Nodes![i].GetForce(particle, world);
+                accel += Nodes![i].GetAccel(particle, world);
             }
 
-            return force;
+            return accel;
         }
 
         public void Compute()
@@ -81,13 +86,21 @@
             for (int i = 0; i < 4; i++)
             {
                 Nodes![i].Compute();
+
                 var mass = Nodes![i].TotalMass;
+
                 CenterOfMass += Nodes![i].CenterOfMass * mass;
                 TotalMass += mass;
             }
 
-            CenterOfMass /= TotalMass;
-            TotalMass /= 4;
+            if (TotalMass != 0)
+            {
+                CenterOfMass /= TotalMass;
+            }
+            else
+            {
+                CenterOfMass = Vector2.Zero;
+            }
         }
 
         public void Subdivide()
@@ -134,6 +147,8 @@
 
             for (int i = 0; i < 4; i++)
             {
+                //if (Nodes[i] == null) throw new System.Exception();
+
                 if (Nodes[i].Contains(position))
                 {
                     return Nodes[i].GetLowest(position);
@@ -142,5 +157,7 @@
 
             return null;
         }
+
+        public override string ToString() => $"Quadtree ({Particle}) ({Nodes})";
     }
 }
