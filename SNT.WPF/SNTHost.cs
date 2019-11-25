@@ -1,6 +1,7 @@
 ﻿namespace SNT.WPF
 {
     using System;
+    using System.Linq;
     using System.Numerics;
     using System.Windows;
     using System.Windows.Media;
@@ -25,7 +26,7 @@
 
             var trace = new Vector2[10];
 
-            foreach (var particle in MainWindow.World.Particles)
+            foreach (var particle in MainWindow.World.Particles.ToList())
             {
                 var size = MathF.Log10(particle.Mass);
 

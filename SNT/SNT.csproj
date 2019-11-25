@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Alea" Version="3.0.4" />
   </ItemGroup>
 
 </Project>

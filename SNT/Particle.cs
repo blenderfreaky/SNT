@@ -4,19 +4,12 @@
 
     public class Particle
     {
-        private Vector2 _position;
-        public Vector2 Position
-        {
-            get => _position;
-            set
-            {
-                _position = value;
-                //Trace[TraceIndex] = value;
-                //TraceIndex = (TraceIndex + 1) % Trace.Length;
-            }
-        }
+        public Vector2 Position;
 
         public Vector2 Velocity;
+
+        public Vector2 Accel;
+
         public float Mass;
 
         public World World;

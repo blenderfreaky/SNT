@@ -40,22 +40,41 @@
             Particles.Add(new Particle(position, velocity, mass, this));
         }
 
-        public Quadtree Quadtree;
+        public Quadtree? Quadtree;
 
         public void Step()
         {
+            //Parallel.ForEach(Particles, particle =>
+            //{
+            //    Parallel.ForEach(Particles, other =>
+            //    {
+            //        var diff = (other.Position - particle.Position);
+
+            //        particle.Velocity += diff * Gravity * other.Mass / MathF.Pow(diff.LengthSquared() + Damping, 3f / 2f);
+            //    });
+            //    particle.Position += particle.Velocity;
+            //});
+
+            //return;
+
+            float deltaT = 1;
+
             var quadtree = Quadtree = Quadtree.Build(Particles, Min, Max);
 
             Parallel.ForEach(Particles, particle =>
-            {
-                particle.Velocity += quadtree.GetAccel(particle, this);
-                particle.Position += particle.Velocity;
-            });
+                {
+                    // Leapfrog integration
+
+                    particle.Position += (deltaT * particle.Velocity) + (particle.Accel / 2);
+                    var prevAccel = particle.Accel;
+                    particle.Accel = quadtree.GetAccel(particle, this);
+                    particle.Velocity += deltaT * (prevAccel + particle.Accel) / 2;
+                });
         }
 
         public Vector2 AccelFor(float distanceSquared, Particle particle, Vector2 p2, float m2) =>
             (p2 - particle.Position)
-            * (Gravity * m2 / particle.Mass
+            * (Gravity * m2
                 / MathF.Pow(distanceSquared + Damping, 3f / 2f));
     }
 }

@@ -29,29 +29,31 @@
             var size = new Vector2(ImageWidth = 800, ImageHeight = 800);
 
             World = new World(-size, size,
-                gravity: 5f, damping: 50f, theta: 1f);
+                gravity: 0.1f, damping: 10f, theta: 1f);
 
-            PopulateWorld(1000, ImageWidth / 2, ImageHeight / 2, 0.5f, 0.1f, 100, (p, _) =>
+            PopulateWorld(800, ImageWidth / 2, ImageHeight / 2, 0.8f, 0.6f, 10f, (p, _) =>
                 {
                     //return Vector2.Zero;
-                    return new Vector2(p.Y, -p.X) / -500f;
+                    return new Vector2(p.Y, -p.X) / -1000f;
                 });
 
-            //World.AddParticle(new Vector2(0,0), new Vector2(0, 0), 5000000);
+           // World.AddParticle(new Vector2(0, 0), new Vector2(0, 0), 5000000);
             //World.AddParticle(new Vector2(1, -1) * 200, new Vector2(-1, 0), 5000);
             //World.AddParticle(new Vector2(1, 1) * -200, new Vector2(1, 0), 50);
 
-            WorkingTask = Task.Run(MainLoop);
+            //WorkingTask = Task.Run(MainLoop);
 
             snt.MainWindow = this;
 
             var timer = new DispatcherTimer(DispatcherPriority.Render, Dispatcher);
             timer.Tick += (s, e) =>
-                {
-                    //Step();
-                    snt.InvalidateVisual();
+            {
+                Step();
+                Step();
+                Step();
+                snt.InvalidateVisual();
                 };
-            timer.Interval = TimeSpan.FromMilliseconds(1000 / 50f);
+            timer.Interval = TimeSpan.FromMilliseconds(1000 / 40f);
             timer.Start();
         }
 
@@ -82,8 +84,13 @@
 
             for (int i = 0; i < amount; i++)
             {
-                var p_x = (areaX * areaCoverage * (float)random.NextDouble()) * 2 - (areaX * areaCoverage);
-                var p_y = (areaY * areaCoverage * (float)random.NextDouble()) * 2 - (areaY * areaCoverage);
+                //var p_x = (areaX * areaCoverage * (float)random.NextDouble()) * 2 - (areaX * areaCoverage);
+                //var p_y = (areaY * areaCoverage * (float)random.NextDouble()) * 2 - (areaY * areaCoverage);
+                var theta = (float)random.NextDouble() * MathF.PI * 2;
+                var r = (float)random.NextDouble() * areaX * areaCoverage;
+
+                var p_x = MathF.Cos(theta) * r;
+                var p_y = MathF.Sin(theta) * r;
 
                 var pos = new Vector2(p_x, p_y);
 

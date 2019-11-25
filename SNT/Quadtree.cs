@@ -129,7 +129,7 @@
 
             if (lowest.Particle != null)
             {
-                if ((lowest.Particle.Position - particle.Position).LengthSquared() < 4)
+                if ((lowest.Particle.Position - particle.Position).LengthSquared() < 1)
                 {
                     lowest.Particle.Mass += particle.Mass;
                     return false;
