@@ -27,7 +27,7 @@
 
             World = new World(new Vector2(0, 0), new Vector2(ImageWidth = 800, ImageHeight = 800), gravity: 100f, damping: 5, theta:0.1f);
 
-            PopulateWorld(10000, ImageWidth, ImageHeight, 0.1f, 2, (p, r) =>
+            PopulateWorld(1000, ImageWidth, ImageHeight, 0.1f, 2, (p, r) =>
             {
                 return new Vector2();
                 var centerDist = p - new Vector2(ImageWidth/2, ImageHeight/2);

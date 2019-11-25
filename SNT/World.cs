@@ -4,12 +4,13 @@
     using System.Collections.Generic;
     using System.Numerics;
     using System.Threading.Tasks;
+    using System.Linq;
 
     public class World
     {
-        public float Gravity;
-        public float Damping;
-        public float Theta;
+        public static float Gravity;
+        public static float Damping;
+        public static float Theta;
 
         public Vector2 Min, Max;
 
@@ -46,12 +47,15 @@
 
             Parallel.ForEach(Particles, particle =>
             {
+                var a = Particles.ToList();
+                a.Remove(particle);
+                a.Select(x => quadtree.GetForce(particle, x) / particle.Mass);
                 particle.Velocity += quadtree.GetForce(particle, this) / particle.Mass;
                 particle.Position += particle.Velocity;
             });
         }
 
-        public Vector2 ForceBetween(float distanceSquared, Vector2 p1, Vector2 p2, float m1, float m2) =>
+        public static Vector2 ForceBetween(float distanceSquared, Vector2 p1, Vector2 p2, float m1, float m2) =>
              (p1 - p2) * (Gravity * m1 * m2 / MathF.Pow(distanceSquared + Damping, 3f / 2f));
     }
 }

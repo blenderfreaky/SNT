@@ -6,11 +6,22 @@
 
     public class SNTHost : FrameworkElement
     {
+        private static System.Diagnostics.Stopwatch s = new System.Diagnostics.Stopwatch();
         public MainWindow MainWindow { get; set; }
 
         protected override void OnRender(DrawingContext drawingContext)
         {
             float fac = 1f;
+
+            drawingContext.DrawRectangle(Brushes.Black, null, new Rect(0, 0, MainWindow.ImageWidth * fac, MainWindow.ImageHeight * fac));
+            if (!s.IsRunning) s.Start();
+            s.Stop();
+            float a = 0; try { a = 1000 / s.ElapsedMilliseconds; } catch { }
+
+            drawingContext.DrawText(new FormattedText(a.ToString(), System.Globalization.CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Arail"), 32, Brushes.White), new Point(10, 10));
+            s.Reset();
+            s.Start();
+            float maxspeed = 0;
             foreach (var particle in MainWindow.World.Particles)
             {
                 float speed = Math.Min(particle.Velocity.Length(), 1);
