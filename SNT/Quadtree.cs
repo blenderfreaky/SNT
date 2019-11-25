@@ -45,27 +45,6 @@
             return quadtree;
         }
 
-        public Vector2 GetForce(Particle particle, World world)
-        {
-            float distance = (particle.Position - CenterOfMass).LengthSquared();
-            if ((Max.X - Min.X) / distance < World.Theta || Particle != null)
-            {
-                return World.ForceBetween(
-                    distance,
-                    CenterOfMass, particle.Position,
-                    TotalMass, particle.Mass);
-            }
-
-            Vector2 force = Vector2.Zero;
-
-            for (int i = 0; i < 4; i++)
-            {
-                force += Nodes![i].GetForce(particle, world);
-            }
-
-            return force;
-        }
-
         public Vector2 GetForce(Particle particle, Particle p)
         {
             float distance = (particle.Position - CenterOfMass).LengthSquared();

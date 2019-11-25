@@ -12,7 +12,6 @@
     /// </summary>
     public partial class MainWindow : Window
     {
-        public World World { get; }
 
         public Task WorkingTask { get; }
 
@@ -25,7 +24,7 @@
         {
             InitializeComponent();
 
-            World = new World(new Vector2(0, 0), new Vector2(ImageWidth = 800, ImageHeight = 800), gravity: 100f, damping: 5, theta:0.1f);
+            World.SetWorld(gravity: 100f, damping: 5, theta:0.1f, new Vector2(0, 0), new Vector2(ImageWidth = 800, ImageHeight = 800));
 
             PopulateWorld(1000, ImageWidth, ImageHeight, 0.1f, 2, (p, r) =>
             {

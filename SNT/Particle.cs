@@ -8,14 +8,11 @@
         public Vector2 Velocity;
         public float Mass;
 
-        public World World;
-
-        public Particle(Vector2 position, Vector2 velocity, float mass, World world)
+        public Particle(Vector2 position, Vector2 velocity, float mass)
         {
             Position = position;
             Velocity = velocity;
             Mass = mass;
-            World = world;
         }
     }
 }
