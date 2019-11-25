@@ -1,5 +1,6 @@
 ﻿namespace SNT.WPF
 {
+    using System;
     using System.Windows;
     using System.Windows.Media;
 
@@ -10,12 +11,11 @@
         protected override void OnRender(DrawingContext drawingContext)
         {
             float fac = 1f;
-
-            drawingContext.DrawRectangle(Brushes.Black, null, new Rect(0, 0, MainWindow.ImageWidth * fac, MainWindow.ImageHeight * fac));
-
             foreach (var particle in MainWindow.World.Particles)
             {
-                drawingContext.DrawEllipse(Brushes.White, null, new Point(particle.Position.X * fac, particle.Position.Y * fac), particle.Mass, particle.Mass);
+                float speed = Math.Min(particle.Velocity.Length(), 1);
+                var brush = new SolidColorBrush(Color.FromArgb(255, (byte)(speed * 256 - 1), (byte)(256- speed * 256), (byte)0));
+                drawingContext.DrawEllipse(brush, null, new Point(particle.Position.X * fac, particle.Position.Y * fac), particle.Mass, particle.Mass);
             }
         }
     }
