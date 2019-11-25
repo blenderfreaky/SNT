@@ -53,8 +53,26 @@
             });
         }
 
+        private float TC = MathF.Cos(0.1f);
+
+        private float TS = MathF.Sin(0.1f);
+
+        //private Vector2 Tilt(Vector2 vec, float angle)
+        //{
+        //    return new Vector2(
+        //        (vec.X * MathF.Cos(angle)) - (vec.Y * MathF.Sin(angle)),
+        //        (vec.X * MathF.Sin(angle)) + (vec.Y * MathF.Cos(angle)));
+        //}
+
+        private Vector2 Tilt(Vector2 vec)
+        {
+            return new Vector2(
+                (vec.X * TC) - (vec.Y * TS),
+                (vec.X * TS) + (vec.Y * TC));
+        }
+
         public Vector2 AccelFor(float distanceSquared, Particle particle, Vector2 p2, float m2) =>
-             (p2 - particle.Position)
+            Tilt(p2 - particle.Position)
             * (Gravity * m2 / particle.Mass
                 / MathF.Pow(distanceSquared + Damping, 3f / 2f));
     }

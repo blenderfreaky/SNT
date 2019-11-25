@@ -37,7 +37,11 @@
 
             for (int i = 1; i < particles.Count; i++)
             {
-                quadtree.Insert(particles[i]);
+                if (!quadtree.Insert(particles[i]))
+                {
+                    particles.RemoveAt(i);
+                    i--;
+                }
             }
 
             quadtree.Compute();
@@ -117,14 +121,20 @@
             Nodes[3] = new Quadtree(Min + halfsize, Max);
         }
 
-        public void Insert(Particle particle)
+        public bool Insert(Particle particle)
         {
             var lowest = GetLowest(particle.Position);
 
-            if (lowest == null) return;
+            if (lowest == null) return true;
 
             if (lowest.Particle != null)
             {
+                if ((lowest.Particle.Position - particle.Position).LengthSquared() < 4)
+                {
+                    lowest.Particle.Mass += particle.Mass;
+                    return false;
+                }
+
                 lowest.Subdivide();
                 lowest.Insert(lowest.Particle);
                 lowest.Particle = null;
@@ -135,6 +145,8 @@
             {
                 lowest.Particle = particle;
             }
+
+            return true;
         }
 
         public bool Contains(Vector2 position) =>

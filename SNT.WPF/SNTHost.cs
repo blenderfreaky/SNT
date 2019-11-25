@@ -63,7 +63,7 @@
                 }
             }
 
-            if (MainWindow.World.Quadtree != null) DrawQuadtree(MainWindow.World.Quadtree);
+            //if (MainWindow.World.Quadtree != null) DrawQuadtree(MainWindow.World.Quadtree);
 
             void DrawQuadtree(Quadtree t, int depth = 0)
             {

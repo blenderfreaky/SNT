@@ -29,17 +29,17 @@
             var size = new Vector2(ImageWidth = 800, ImageHeight = 800);
 
             World = new World(-size, size,
-                gravity: 0.1f, damping: 10f, theta: 1f);
+                gravity: 5f, damping: 50f, theta: 1f);
 
-            PopulateWorld(3, ImageWidth / 2, ImageHeight / 2, 0.4f, 0.1f, 100, (p, _) =>
+            PopulateWorld(500, ImageWidth / 2, ImageHeight / 2, 0.5f, 0.1f, 100, (p, _) =>
                 {
                     //return Vector2.Zero;
-                    var centerDist = p;// - new Vector2(ImageWidth/2, ImageHeight/2);
-                    return new Vector2(centerDist.Y, -centerDist.X) / -1000f;
+                    return new Vector2(p.Y, -p.X) / -500f;
                 });
 
+            //World.AddParticle(new Vector2(0,0), new Vector2(0, 0), 5000000);
             //World.AddParticle(new Vector2(1, -1) * 200, new Vector2(-1, 0), 5000);
-            World.AddParticle(new Vector2(1, 1) * -200, new Vector2(1, 0), 50);
+            //World.AddParticle(new Vector2(1, 1) * -200, new Vector2(1, 0), 50);
 
             //WorkingTask = Task.Run(MainLoop);
 
@@ -87,9 +87,13 @@
 
                 var pos = new Vector2(p_x, p_y);
 
+                var vel = velocityCalc(pos, random);
+
+                //pos = Vector2.Zero;
+
                 var m = (massFac * (float)random.NextDouble()) + massBase;
 
-                World.AddParticle(pos, velocityCalc(pos, random), m);
+                World.AddParticle(pos, vel, m);
             }
         }
     }
