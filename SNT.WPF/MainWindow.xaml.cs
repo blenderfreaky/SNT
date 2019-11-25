@@ -31,7 +31,7 @@
             World = new World(-size, size,
                 gravity: 5f, damping: 50f, theta: 1f);
 
-            PopulateWorld(500, ImageWidth / 2, ImageHeight / 2, 0.5f, 0.1f, 100, (p, _) =>
+            PopulateWorld(1000, ImageWidth / 2, ImageHeight / 2, 0.5f, 0.1f, 100, (p, _) =>
                 {
                     //return Vector2.Zero;
                     return new Vector2(p.Y, -p.X) / -500f;
@@ -41,14 +41,14 @@
             //World.AddParticle(new Vector2(1, -1) * 200, new Vector2(-1, 0), 5000);
             //World.AddParticle(new Vector2(1, 1) * -200, new Vector2(1, 0), 50);
 
-            //WorkingTask = Task.Run(MainLoop);
+            WorkingTask = Task.Run(MainLoop);
 
             snt.MainWindow = this;
 
             var timer = new DispatcherTimer(DispatcherPriority.Render, Dispatcher);
             timer.Tick += (s, e) =>
                 {
-                    Step();
+                    //Step();
                     snt.InvalidateVisual();
                 };
             timer.Interval = TimeSpan.FromMilliseconds(1000 / 50f);
