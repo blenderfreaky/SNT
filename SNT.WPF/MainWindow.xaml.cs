@@ -29,12 +29,12 @@
             var size = new Vector2(ImageWidth = 800, ImageHeight = 800);
 
             World = new World(-size, size,
-                gravity: 0.1f, damping: 10f, theta: 1f);
+                gravity: 0.01f, damping: 0.0f, theta: 0.5f);
 
             PopulateWorld(800, ImageWidth / 2, ImageHeight / 2, 0.8f, 0.6f, 10f, (p, _) =>
                 {
-                    //return Vector2.Zero;
-                    return new Vector2(p.Y, -p.X) / -1000f;
+                    return Vector2.Zero;
+                    return new Vector2(p.Y, -p.X) / -500f;
                 });
 
            // World.AddParticle(new Vector2(0, 0), new Vector2(0, 0), 5000000);

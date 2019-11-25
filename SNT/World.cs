@@ -61,11 +61,20 @@
 
             var quadtree = Quadtree = Quadtree.Build(Particles, Min, Max);
 
+            var avg = Vector2.Zero;
+
+            for (int i = 0; i < Particles.Count; i++)
+            {
+                avg += Particles[i].Position;
+            }
+
+            avg /= Particles.Count;
+
             Parallel.ForEach(Particles, particle =>
                 {
                     // Leapfrog integration
 
-                    particle.Position += (deltaT * particle.Velocity) + (particle.Accel / 2);
+                    particle.Position += (deltaT * particle.Velocity) + (particle.Accel / 2) - avg;
                     var prevAccel = particle.Accel;
                     particle.Accel = quadtree.GetAccel(particle, this);
                     particle.Velocity += deltaT * (prevAccel + particle.Accel) / 2;
