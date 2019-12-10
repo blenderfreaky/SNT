@@ -1,2 +1,2 @@
 # SNT
-visit https://github.com/doge815/SGS its far better
+Barnes-Hut n-Body simulation in C# with WPF
